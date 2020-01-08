@@ -1,5 +1,6 @@
 package com.mpsnake.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import javax.persistence.*;
 
@@ -10,7 +11,9 @@ import javax.persistence.*;
 @Setter
 public class Player {
     @Id
+    @JsonProperty("player_id")
     private String player_id;
 
-    private String display_name;
+    @JsonProperty("nickname")
+    private String nickname;
 }
