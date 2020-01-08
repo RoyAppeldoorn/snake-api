@@ -27,17 +27,9 @@ public class PlayerController {
         playerLogic.createPlayer(newPlayer);
     }
 
-    @PutMapping("/player/{id}")
-    public Player updatePlayer(@RequestBody Player newPlayer, @PathVariable String id) {
-        return repository.findById(id)
-                .map(player -> {
-                    player.setNickname(newPlayer.getNickname());
-                    return repository.save(player);
-                })
-                .orElseGet(() -> {
-                    newPlayer.setPlayer_id(id);
-                    return repository.save(newPlayer);
-                });
+    @GetMapping("/player/{id}")
+    public Player getPlayer(@PathVariable String id) {
+        return playerLogic.getPlayer(id);
     }
 
     @DeleteMapping("/player/{id}")
