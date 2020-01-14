@@ -14,7 +14,7 @@ import java.util.Optional;
 public class PlayerLogic {
     private PlayerRepository playerRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(PlayerLogic.class);
+    private final Logger logger = LoggerFactory.getLogger(PlayerLogic.class);
 
     @Autowired
     public PlayerLogic(PlayerRepository playerRepo) {

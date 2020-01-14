@@ -13,10 +13,6 @@ public class Statistics {
     @GeneratedValue
     private String player_id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "player_id")
-    private Player player;
-
     private Integer kills;
 
     private Integer deads;

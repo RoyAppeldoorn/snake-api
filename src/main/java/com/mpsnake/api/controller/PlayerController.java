@@ -16,7 +16,7 @@ public class PlayerController {
     @Autowired
     PlayerLogic playerLogic;
 
-    private static final Logger logger = LoggerFactory.getLogger(PlayerController.class);
+    private final Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
     PlayerController(PlayerRepository repository) {
         this.repository = repository;
