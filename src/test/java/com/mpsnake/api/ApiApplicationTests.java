@@ -14,7 +14,7 @@ class ApiApplicationTests {
     private PlayerController playerController;
 
     @Test
-    public void contexLoads() throws Exception {
+    public void contextLoads() throws Exception {
         assertThat(playerController).isNotNull();
     }
 }
