@@ -75,20 +75,21 @@ public class StatisticsLogic {
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }
-
     }
 
-    public Statistic getUserStatistics(String id) throws ResponseStatusException{
+    public Statistic getUserStatistics(String id) throws ResponseStatusException {
         Optional<Statistic> statistic = null;
         try {
             statistic = statisticsRepository.findById(id);
-            statistic.orElseThrow(() ->
-                    new ResponseStatusException(
-                            HttpStatus.NOT_FOUND, "User not found")
-            );
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }
+
+        statistic.orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found")
+        );
+
         return statistic.get();
     }
 }

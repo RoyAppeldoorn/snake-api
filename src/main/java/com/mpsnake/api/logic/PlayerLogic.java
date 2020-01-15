@@ -21,23 +21,33 @@ public class PlayerLogic {
 
     public void createPlayer(Player newPlayer) {
         try {
+            validateProperty(newPlayer.getNickname(), "Username can not be null or empty");
             playerRepository.save(newPlayer);
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }
     }
 
-    public Player getPlayer(String id) {
+    public Player getPlayer(String id) throws ResponseStatusException {
         Optional<Player> player = null;
         try {
             player = playerRepository.findById(id);
-            player.orElseThrow(() ->
-                new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Player not found")
-            );
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }
+
+        player.orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Player not found")
+        );
+
         return player.get();
+    }
+
+    private void validateProperty(String prop, String errorMessage) {
+        if(prop == null || prop.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, errorMessage);
+        }
     }
 }

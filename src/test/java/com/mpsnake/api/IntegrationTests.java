@@ -2,7 +2,9 @@ package com.mpsnake.api;
 
 import com.google.gson.Gson;
 import com.mpsnake.api.model.Player;
+import com.mpsnake.api.model.Statistic;
 import com.mpsnake.api.repositories.PlayerRepository;
+import com.mpsnake.api.repositories.StatisticsRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IntegrationTests {
     // <editor-fold defaultstate="collapsed" desc="Setup">
     private Player player = new Player("abcd", "test");
+    private Statistic statistic = new Statistic("abcd");
 
     private MockMvc mock;
 
@@ -37,11 +39,14 @@ public class IntegrationTests {
 
     @Resource
     private PlayerRepository playerRepository;
+    @Resource
+    private StatisticsRepository statisticsRepository;
 
     @Before
     public void setup() {
         mock = MockMvcBuilders.webAppContextSetup(wac).build();
         playerRepository.save(player);
+        statisticsRepository.save(statistic);
     }
     // </editor-fold>
 
@@ -82,7 +87,7 @@ public class IntegrationTests {
 
     // <editor-fold defaultstate="collapsed" desc="Tests for get /player/{id}">
     @Test
-    public void getCorrectPlayer() throws Exception{
+    public void getPlayerWithCorrectData() throws Exception{
         MvcResult result = mock.perform(MockMvcRequestBuilders.get("/player/abcd")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(player))
@@ -96,15 +101,73 @@ public class IntegrationTests {
     }
 
     @Test
-    public void getPlayerWithIncorrect() throws Exception{
-        MvcResult result = mock.perform(MockMvcRequestBuilders.get("/player/abcd")
+    public void getPlayerWithIncorrectData() throws Exception{
+        mock.perform(MockMvcRequestBuilders.get("/player/ab")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(player))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Tests for get /statistics/{id}">
+    @Test
+    public void getStatisticsFromPlayerWithCorrectData() throws Exception{
+        MvcResult result = mock.perform(MockMvcRequestBuilders.get("/statistics/abcd")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(statistic))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
                 .andReturn();
 
-        String expected = "{\"player_id\":\"abcd\",\"nickname\":\"test\"}";
+        String expected = "{\"player_id\":\"abcd\",\"kills\":null,\"deads\":null}";
+
+        Assert.assertEquals(expected, result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void getStatisticsFromPlayerWithIncorrectData() throws Exception{
+        mock.perform(MockMvcRequestBuilders.get("/statistics/ab")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Tests for update /statistics/{id}/kill">
+    @Test
+    public void increaseKillCountForPlayer() throws Exception{
+        mock.perform(MockMvcRequestBuilders.post("/statistics/abcd/kill")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200));
+
+        MvcResult result = mock.perform(MockMvcRequestBuilders.get("/statistics/abcd")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(statistic))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andReturn();
+
+        String expected = "{\"player_id\":\"abcd\",\"kills\":1,\"deads\":null}";
+
+        Assert.assertEquals(expected, result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void increaseDeadCountForPlayer() throws Exception{
+        mock.perform(MockMvcRequestBuilders.post("/statistics/abcd/dead")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200));
+
+        MvcResult result = mock.perform(MockMvcRequestBuilders.get("/statistics/abcd")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(statistic))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andReturn();
+
+        String expected = "{\"player_id\":\"abcd\",\"kills\":null,\"deads\":1}";
 
         Assert.assertEquals(expected, result.getResponse().getContentAsString());
     }
