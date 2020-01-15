@@ -13,8 +13,10 @@ public class Statistic {
     @Id
     private String player_id;
 
+    @Column(nullable = true)
     private Integer kills;
 
+    @Column(nullable = true)
     private Integer deads;
 
     public Statistic(String playerId) {
