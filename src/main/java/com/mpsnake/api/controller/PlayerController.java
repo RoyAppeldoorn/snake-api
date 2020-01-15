@@ -33,8 +33,4 @@ public class PlayerController {
         return playerLogic.getPlayer(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePlayer(@PathVariable String id) {
-        repository.deleteById(id);
-    }
 }
