@@ -1,12 +1,12 @@
 package com.mpsnake.api.logic;
 
-import com.mpsnake.api.controller.PlayerController;
 import com.mpsnake.api.model.Player;
 import com.mpsnake.api.repositories.PlayerRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.mpsnake.api.utilities.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -14,18 +14,30 @@ import java.util.Optional;
 public class PlayerLogic {
     private PlayerRepository playerRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(PlayerLogic.class);
-
     @Autowired
     public PlayerLogic(PlayerRepository playerRepo) {
         this.playerRepository = playerRepo;
     }
 
     public void createPlayer(Player newPlayer) {
-        playerRepository.save(newPlayer);
+        try {
+            playerRepository.save(newPlayer);
+        } catch (Exception ex) {
+            LoggerUtil.errorLogging(ex.toString());
+        }
     }
 
     public Player getPlayer(String id) {
-        return playerRepository.findById(id).orElse(null);
+        Optional<Player> player = null;
+        try {
+            player = playerRepository.findById(id);
+            player.orElseThrow(() ->
+                new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Player not found")
+            );
+        } catch (Exception ex) {
+            LoggerUtil.errorLogging(ex.toString());
+        }
+        return player.get();
     }
 }

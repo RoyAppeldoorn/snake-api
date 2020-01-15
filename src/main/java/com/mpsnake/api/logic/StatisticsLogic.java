@@ -1,13 +1,16 @@
 package com.mpsnake.api.logic;
 
-import com.mpsnake.api.controller.StatisticsController;
+import com.mpsnake.api.model.Player;
 import com.mpsnake.api.model.Statistic;
 import com.mpsnake.api.repositories.StatisticsRepository;
 import com.mpsnake.api.utilities.LoggerUtil;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class StatisticsLogic {
@@ -21,7 +24,7 @@ public class StatisticsLogic {
 
     public void increaseKillCountForPlayer(String id) {
         try {
-            Statistic stat = this.statisticsRepository.findById(id).orElse(null);
+            Statistic stat = statisticsRepository.findById(id).orElse(null);
             if(stat == null) {
                 insertNewUser(id);
             } else {
@@ -34,7 +37,7 @@ public class StatisticsLogic {
 
     public void increaseDeadCountForPlayer(String id) {
         try {
-            Statistic stat = this.statisticsRepository.findById(id).orElse(null);
+            Statistic stat = statisticsRepository.findById(id).orElse(null);
             if(stat == null) {
                 insertNewUser(id);
             } else {
@@ -52,7 +55,7 @@ public class StatisticsLogic {
             statistic.setKills(statistic.getKills() + 1);
         }
 
-        this.statisticsRepository.save(statistic);
+        statisticsRepository.save(statistic);
     }
 
     public void updateDeadCountForPlayer(Statistic statistic) {
@@ -62,21 +65,30 @@ public class StatisticsLogic {
             statistic.setDeads(statistic.getDeads() + 1);
         }
 
-        this.statisticsRepository.save(statistic);
+        statisticsRepository.save(statistic);
     }
 
     public void insertNewUser(String id) {
-        Statistic newPlayer = new Statistic(id);
-        this.statisticsRepository.save(newPlayer);
-    }
-
-    public Statistic getUserStatistics(String id) {
-        Statistic statistic = null;
         try {
-            statistic = this.statisticsRepository.findById(id).orElse(null);
+            Statistic newPlayer = new Statistic(id);
+            statisticsRepository.save(newPlayer);
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }
-        return statistic;
+
+    }
+
+    public Statistic getUserStatistics(String id) throws ResponseStatusException{
+        Optional<Statistic> statistic = null;
+        try {
+            statistic = statisticsRepository.findById(id);
+            statistic.orElseThrow(() ->
+                    new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "User not found")
+            );
+        } catch (Exception ex) {
+            LoggerUtil.errorLogging(ex.toString());
+        }
+        return statistic.get();
     }
 }

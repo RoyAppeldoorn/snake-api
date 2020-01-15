@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/player")
 @RestController
 public class PlayerController {
     private final PlayerRepository repository;
@@ -22,17 +23,17 @@ public class PlayerController {
         this.repository = repository;
     }
 
-    @PostMapping("/player/create")
+    @PostMapping("/create")
     public void createPlayer(@RequestBody Player newPlayer) {
         playerLogic.createPlayer(newPlayer);
     }
 
-    @GetMapping("/player/{id}")
+    @GetMapping("/{id}")
     public Player getPlayer(@PathVariable String id) {
         return playerLogic.getPlayer(id);
     }
 
-    @DeleteMapping("/player/{id}")
+    @DeleteMapping("/{id}")
     public void deletePlayer(@PathVariable String id) {
         repository.deleteById(id);
     }
