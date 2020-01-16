@@ -22,53 +22,7 @@ public class StatisticsLogic {
         this.statisticsRepository = statisticsRepo;
     }
 
-    public void increaseKillCountForPlayer(String id) {
-        try {
-            Statistic stat = statisticsRepository.findById(id).orElse(null);
-            if(stat == null) {
-                insertNewUser(id);
-            } else {
-                updateKillCountForPlayer(stat);
-            }
-        } catch (Exception ex){
-            LoggerUtil.errorLogging(ex.toString());
-        }
-    }
-
-    public void increaseDeadCountForPlayer(String id) {
-        try {
-            Statistic stat = statisticsRepository.findById(id).orElse(null);
-            if(stat == null) {
-                insertNewUser(id);
-            } else {
-                updateDeadCountForPlayer(stat);
-            }
-        } catch (Exception ex){
-            LoggerUtil.errorLogging(ex.toString());
-        }
-    }
-
-    public void updateKillCountForPlayer(Statistic statistic) {
-        if (statistic.getKills() == null) {
-            statistic.setKills(1);
-        } else {
-            statistic.setKills(statistic.getKills() + 1);
-        }
-
-        statisticsRepository.save(statistic);
-    }
-
-    public void updateDeadCountForPlayer(Statistic statistic) {
-        if (statistic.getDeads() == null) {
-            statistic.setDeads(1);
-        } else {
-            statistic.setDeads(statistic.getDeads() + 1);
-        }
-
-        statisticsRepository.save(statistic);
-    }
-
-    public void insertNewUser(String id) {
+    public void createNewStatistic(String id) {
         try {
             Statistic newPlayer = new Statistic(id);
             statisticsRepository.save(newPlayer);
@@ -91,5 +45,33 @@ public class StatisticsLogic {
         );
 
         return statistic.get();
+    }
+
+    public void increaseKillCountForPlayer(String id) {
+        try {
+            Statistic stat = getUserStatistics(id);
+            if(stat.getKills() == null) {
+                stat.setKills(1);
+            } else {
+                stat.setKills(stat.getKills() + 1);
+            }
+            statisticsRepository.save(stat);
+        } catch(Exception ex) {
+            LoggerUtil.errorLogging(ex.toString());
+        }
+    }
+
+    public void increaseDeadCountForPlayer(String id) {
+        try {
+            Statistic stat = getUserStatistics(id);
+            if(stat.getDeads() == null) {
+                stat.setDeads(1);
+            } else {
+                stat.setDeads(stat.getDeads() + 1);
+            }
+            statisticsRepository.save(stat);
+        } catch(Exception ex) {
+            LoggerUtil.errorLogging(ex.toString());
+        }
     }
 }
