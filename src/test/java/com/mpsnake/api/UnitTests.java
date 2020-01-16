@@ -2,7 +2,6 @@ package com.mpsnake.api;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import com.google.gson.Gson;
 import com.mpsnake.api.logic.PlayerLogic;
 import com.mpsnake.api.logic.StatisticsLogic;
 import com.mpsnake.api.model.Player;
@@ -21,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -59,21 +58,155 @@ public class UnitTests {
 
     // <editor-fold defaultstate="collapsed" desc="PlayerLogic Unit tests">
     @Test
+    public void createNewPlayerWithCorrectData() {
+        // arrange
+        Player player = new Player("test", "test");
+        String expected = player.getPlayer_id();
+
+        // act
+        playerLogic.createPlayer(player);
+        String actual = playerRepository.findById("test").get().getPlayer_id();
+
+        // assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void createNewPlayerWithIncorrectData() {
+        // arrange
         listAppender.start();
         logger.addAppender(listAppender);
+        List<ILoggingEvent> logsList = listAppender.list;
+        Player player = new Player("", "");
 
-        Player player = new Player("sdfsfsdfs", "");
+        // act
         playerLogic.createPlayer(player);
 
-        List<ILoggingEvent> logsList = listAppender.list;
+        // arrange
         Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
     }
 
     @Test
-    public void getPlayerWithCorrectId() {
-        Player expected = playerLogic.getPlayer("abcd");
+    public void getPlayerWithCorrectData() {
+        // arrange
+        Player expected;
+
+        // act
+        expected = playerLogic.getPlayer("abcd");
+
+        // assert
         Assert.assertEquals(expected.getPlayer_id(), player.getPlayer_id());
+    }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getPlayerWithIncorrectData() {
+        // act
+        playerLogic.getPlayer("ab");
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="StatisticsLogic Unit tests">
+    @Test
+    public void createNewStatisticWithCorrectData() {
+        // arrange
+        String id = "test";
+
+        // act
+        statisticsLogic.createNewStatistic(id);
+        String actual = statisticsRepository.findById(id).get().getPlayer_id();
+
+        // assert
+        Assert.assertEquals("test", actual);
+    }
+
+    @Test
+    public void createNewStatisticWithIncorrectData() {
+        // arrange
+        listAppender.start();
+        logger.addAppender(listAppender);
+        List<ILoggingEvent> logsList = listAppender.list;
+        String id = "";
+
+        // act
+        statisticsLogic.createNewStatistic(id);
+
+        // arrange
+        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
+    }
+
+    @Test
+    public void getStatisticFromPlayerByIdWithCorrectData() {
+        // expected
+        String expected = statistic.getPlayer_id();
+
+        // act
+        Statistic actual = statisticsLogic.getUserStatistics("abcd");
+
+        // assert
+        Assert.assertEquals(expected, actual.getPlayer_id());
+    }
+
+    @Test(expected = ResponseStatusException.class)
+    public void getStatisticFromPlayerByIdWithIncorrectData() {
+        statisticsLogic.getUserStatistics("wrong_id");
+    }
+
+    @Test
+    public void increaseKillCountForPlayerWithCorrectData() {
+        // act
+        int expected = 1;
+        String correctId = statistic.getPlayer_id();
+
+        // act
+        statisticsLogic.increaseKillCountForPlayer(correctId);
+        int actual = statisticsRepository.findById(correctId).get().getKills();
+
+        // assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void increaseKillCountForPlayerWithIncorrectData() {
+        // arrange
+        listAppender.start();
+        logger.addAppender(listAppender);
+        List<ILoggingEvent> logsList = listAppender.list;
+        String id = "";
+
+        // act
+        statisticsLogic.increaseKillCountForPlayer(id);
+
+        // arrange
+        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
+    }
+
+    @Test
+    public void increaseDeadCountForPlayerWithCorrectData() {
+        // act
+        int expected = 1;
+        String correctId = statistic.getPlayer_id();
+
+        // act
+        statisticsLogic.increaseDeadCountForPlayer(correctId);
+        int actual = statisticsRepository.findById(correctId).get().getDeads();
+
+        // assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void increaseDeadCountForPlayerWithIncorrectData() {
+        // arrange
+        listAppender.start();
+        logger.addAppender(listAppender);
+        List<ILoggingEvent> logsList = listAppender.list;
+        String id = "";
+
+        // act
+        statisticsLogic.increaseDeadCountForPlayer(id);
+
+        // arrange
+        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
     }
     // </editor-fold>
 }
