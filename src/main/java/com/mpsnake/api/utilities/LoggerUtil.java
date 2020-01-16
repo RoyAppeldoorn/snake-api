@@ -11,8 +11,4 @@ public class LoggerUtil {
     public static void errorLogging(String error){
         logger.error(error);
     }
-
-    public static void debugLogging(String msg){
-        logger.info(msg);
-    }
 }
