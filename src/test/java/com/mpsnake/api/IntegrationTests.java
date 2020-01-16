@@ -119,7 +119,7 @@ public class IntegrationTests {
                 .andExpect(status().is(200))
                 .andReturn();
 
-        String expected = "{\"player_id\":\"abcd\",\"kills\":null,\"deads\":null}";
+        String expected = "{\"player_id\":\"abcd\",\"kills\":0,\"deads\":0}";
 
         Assert.assertEquals(expected, result.getResponse().getContentAsString());
     }
@@ -148,7 +148,7 @@ public class IntegrationTests {
                 .andExpect(status().is(200))
                 .andReturn();
 
-        String expected = "{\"player_id\":\"abcd\",\"kills\":1,\"deads\":null}";
+        String expected = "{\"player_id\":\"abcd\",\"kills\":1,\"deads\":0}";
 
         Assert.assertEquals(expected, result.getResponse().getContentAsString());
     }
@@ -167,7 +167,7 @@ public class IntegrationTests {
                 .andExpect(status().is(200))
                 .andReturn();
 
-        String expected = "{\"player_id\":\"abcd\",\"kills\":null,\"deads\":1}";
+        String expected = "{\"player_id\":\"abcd\",\"kills\":0,\"deads\":1}";
 
         Assert.assertEquals(expected, result.getResponse().getContentAsString());
     }

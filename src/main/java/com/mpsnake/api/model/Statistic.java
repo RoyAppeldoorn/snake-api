@@ -22,5 +22,7 @@ public class Statistic {
 
     public Statistic(String playerId) {
         this.player_id = playerId;
+        this.kills = 0;
+        this.deads = 0;
     }
 }

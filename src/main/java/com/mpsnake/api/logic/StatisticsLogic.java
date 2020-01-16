@@ -50,11 +50,7 @@ public class StatisticsLogic {
     public void increaseKillCountForPlayer(String id) {
         try {
             Statistic stat = getUserStatistics(id);
-            if(stat.getKills() == null) {
-                stat.setKills(1);
-            } else {
-                stat.setKills(stat.getKills() + 1);
-            }
+            stat.setKills(stat.getKills() + 1);
             statisticsRepository.save(stat);
         } catch(Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
@@ -64,11 +60,7 @@ public class StatisticsLogic {
     public void increaseDeadCountForPlayer(String id) {
         try {
             Statistic stat = getUserStatistics(id);
-            if(stat.getDeads() == null) {
-                stat.setDeads(1);
-            } else {
-                stat.setDeads(stat.getDeads() + 1);
-            }
+            stat.setDeads(stat.getDeads() + 1);
             statisticsRepository.save(stat);
         } catch(Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
