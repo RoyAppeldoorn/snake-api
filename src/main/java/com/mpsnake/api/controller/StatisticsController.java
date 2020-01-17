@@ -27,8 +27,8 @@ public class StatisticsController {
         return statisticsLogic.getUserStatistics(id);
     }
 
-    @PostMapping("/create/{id}")
-    public void createNewStatistic(@PathVariable String id) { statisticsLogic.createNewStatistic(id); }
+    @PostMapping("/create")
+    public void createNewStatistic(@RequestBody Statistic id) { statisticsLogic.createNewStatistic(id); }
 
     @PostMapping("/{id}/kill")
     public void increaseKillCountForPlayer(@PathVariable String id) {

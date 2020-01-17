@@ -22,10 +22,9 @@ public class StatisticsLogic {
         this.statisticsRepository = statisticsRepo;
     }
 
-    public void createNewStatistic(String id) {
+    public void createNewStatistic(Statistic id) {
         try {
-            Statistic newPlayer = new Statistic(id);
-            statisticsRepository.save(newPlayer);
+            statisticsRepository.save(id);
         } catch (Exception ex) {
             LoggerUtil.errorLogging(ex.toString());
         }

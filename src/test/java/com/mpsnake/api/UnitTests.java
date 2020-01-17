@@ -109,11 +109,11 @@ public class UnitTests {
     @Test
     public void createNewStatisticWithCorrectData() {
         // arrange
-        String id = "test";
+        Statistic stat = new Statistic("test");
 
         // act
-        statisticsLogic.createNewStatistic(id);
-        String actual = statisticsRepository.findById(id).get().getPlayer_id();
+        statisticsLogic.createNewStatistic(stat);
+        String actual = statisticsRepository.findById("test").get().getPlayer_id();
 
         // assert
         Assert.assertEquals("test", actual);
@@ -125,10 +125,10 @@ public class UnitTests {
         listAppender.start();
         logger.addAppender(listAppender);
         List<ILoggingEvent> logsList = listAppender.list;
-        String id = "";
+        Statistic stat = new Statistic("");
 
         // act
-        statisticsLogic.createNewStatistic(id);
+        statisticsLogic.createNewStatistic(stat);
 
         // arrange
         Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());

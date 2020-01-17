@@ -1,5 +1,6 @@
 package com.mpsnake.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 public class Statistic {
 
     @Id
+    @JsonProperty("player_id")
     @NotEmpty
     private String player_id;
 
