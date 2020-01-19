@@ -3,8 +3,6 @@ package com.mpsnake.api.logic;
 import com.mpsnake.api.model.Statistic;
 import com.mpsnake.api.repositories.StatisticsRepository;
 import com.mpsnake.api.utilities.LoggerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,8 +12,6 @@ import java.util.Optional;
 @Service
 public class StatisticsLogic {
     private StatisticsRepository statisticsRepository;
-
-    private final Logger logger = LoggerFactory.getLogger(StatisticsLogic.class);
 
     public StatisticsLogic(StatisticsRepository statisticsRepo) {
         this.statisticsRepository = statisticsRepo;
