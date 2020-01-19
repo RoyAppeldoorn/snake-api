@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
