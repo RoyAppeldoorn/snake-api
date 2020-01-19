@@ -9,13 +9,22 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Player {
+public class Statistic {
+
     @Id
     @JsonProperty("player_id")
     @NotEmpty
     private String player_id;
 
-    @JsonProperty("nickname")
-    @NotEmpty
-    private String nickname;
+    @Column(nullable = true)
+    private Integer kills;
+
+    @Column(nullable = true)
+    private Integer deads;
+
+    public Statistic(String playerId) {
+        this.player_id = playerId;
+        this.kills = 0;
+        this.deads = 0;
+    }
 }
