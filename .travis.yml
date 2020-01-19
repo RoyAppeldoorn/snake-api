@@ -18,5 +18,6 @@ install:
 # - "./mvnw --show-version --errors --batch-mode test-compile dependency:go-offline"
 
 script:
+ # other script steps might be done before running the actual analysis
  - mvn clean install sonar:sonar -Pcoverage -Dsonar.projectKey=RoyAppeldoorn_snake-api
 
