@@ -71,20 +71,20 @@ public class UnitTests {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test
-    public void createNewPlayerWithIncorrectData() {
-        // arrange
-        listAppender.start();
-        logger.addAppender(listAppender);
-        List<ILoggingEvent> logsList = listAppender.list;
-        Player player = new Player("", "");
-
-        // act
-        playerLogic.createPlayer(player);
-
-        // arrange
-        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
-    }
+//    @Test
+//    public void createNewPlayerWithIncorrectData() {
+//        // arrange
+//        listAppender.start();
+//        logger.addAppender(listAppender);
+//        List<ILoggingEvent> logsList = listAppender.list;
+//        Player player = new Player("", "");
+//
+//        // act
+//        playerLogic.createPlayer(player);
+//
+//        // arrange
+//        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
+//    }
 
     @Test
     public void getPlayerWithCorrectData() {
@@ -120,21 +120,6 @@ public class UnitTests {
     }
 
     @Test
-    public void createNewStatisticWithIncorrectData() {
-        // arrange
-        listAppender.start();
-        logger.addAppender(listAppender);
-        List<ILoggingEvent> logsList = listAppender.list;
-        Statistic stat = new Statistic("");
-
-        // act
-        statisticsLogic.createNewStatistic(stat);
-
-        // arrange
-        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
-    }
-
-    @Test
     public void getStatisticFromPlayerByIdWithCorrectData() {
         // expected
         String expected = statistic.getPlayer_id();
@@ -166,21 +151,6 @@ public class UnitTests {
     }
 
     @Test
-    public void increaseKillCountForPlayerWithIncorrectData() {
-        // arrange
-        listAppender.start();
-        logger.addAppender(listAppender);
-        List<ILoggingEvent> logsList = listAppender.list;
-        String id = "";
-
-        // act
-        statisticsLogic.increaseKillCountForPlayer(id);
-
-        // arrange
-        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
-    }
-
-    @Test
     public void increaseDeadCountForPlayerWithCorrectData() {
         // act
         int expected = 1;
@@ -194,19 +164,5 @@ public class UnitTests {
         Assert.assertEquals(expected, actual);
     }
 
-    @Test
-    public void increaseDeadCountForPlayerWithIncorrectData() {
-        // arrange
-        listAppender.start();
-        logger.addAppender(listAppender);
-        List<ILoggingEvent> logsList = listAppender.list;
-        String id = "";
-
-        // act
-        statisticsLogic.increaseDeadCountForPlayer(id);
-
-        // arrange
-        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
-    }
     // </editor-fold>
 }
