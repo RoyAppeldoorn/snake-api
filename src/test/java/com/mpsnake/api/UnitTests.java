@@ -19,6 +19,7 @@ import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,6 +27,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
+@TestPropertySource(locations="classpath:application-test.properties")
 @SpringBootTest
 public class UnitTests {
     // <editor-fold defaultstate="collapsed" desc="Setup">
