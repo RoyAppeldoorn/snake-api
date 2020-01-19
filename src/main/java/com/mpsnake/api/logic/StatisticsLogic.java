@@ -1,6 +1,5 @@
 package com.mpsnake.api.logic;
 
-import com.mpsnake.api.model.Player;
 import com.mpsnake.api.model.Statistic;
 import com.mpsnake.api.repositories.StatisticsRepository;
 import com.mpsnake.api.utilities.LoggerUtil;
@@ -30,7 +29,7 @@ public class StatisticsLogic {
         }
     }
 
-    public Statistic getUserStatistics(String id) throws ResponseStatusException {
+    public Statistic getUserStatistics(String id) {
         Optional<Statistic> statistic = null;
         try {
             statistic = statisticsRepository.findById(id);

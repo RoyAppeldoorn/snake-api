@@ -1,10 +1,7 @@
 package com.mpsnake.api.controller;
 
-import com.mpsnake.api.logic.PlayerLogic;
 import com.mpsnake.api.logic.StatisticsLogic;
-import com.mpsnake.api.model.Player;
 import com.mpsnake.api.model.Statistic;
-import com.mpsnake.api.repositories.StatisticsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/statistics")
 @RestController
 public class StatisticsController {
-    private final StatisticsRepository repository;
+
+    private final StatisticsLogic statisticsLogic;
 
     @Autowired
-    StatisticsLogic statisticsLogic;
-
-    StatisticsController(StatisticsRepository repository) {
-        this.repository = repository;
+    public StatisticsController(StatisticsLogic statisticsLogic) {
+        this.statisticsLogic = statisticsLogic;
     }
 
     @GetMapping("/{id}")

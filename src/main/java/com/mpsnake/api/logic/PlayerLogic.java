@@ -27,7 +27,7 @@ public class PlayerLogic {
         }
     }
 
-    public Player getPlayer(String id) throws ResponseStatusException {
+    public Player getPlayer(String id) {
         Optional<Player> player = null;
         try {
             player = playerRepository.findById(id);
