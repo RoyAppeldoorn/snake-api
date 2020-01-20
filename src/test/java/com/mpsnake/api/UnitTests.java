@@ -1,7 +1,5 @@
 package com.mpsnake.api;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import com.mpsnake.api.logic.PlayerLogic;
 import com.mpsnake.api.logic.StatisticsLogic;
 import com.mpsnake.api.model.Player;
@@ -10,24 +8,18 @@ import com.mpsnake.api.repositories.PlayerRepository;
 import com.mpsnake.api.repositories.StatisticsRepository;
 import com.mpsnake.api.utilities.LoggerUtil;
 import org.junit.Assert;
-import ch.qos.logback.classic.Logger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@TestPropertySource(locations="classpath:application-test.properties")
 @SpringBootTest
 public class UnitTests {
     // <editor-fold defaultstate="collapsed" desc="Setup">
@@ -41,16 +33,12 @@ public class UnitTests {
     @Autowired
     LoggerUtil loggerUtil;
 
-    Logger logger = (Logger) LoggerFactory.getLogger(LoggerUtil.class);
-
-    ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
-
     @Autowired
     private PlayerRepository playerRepository;
     @Autowired
     private StatisticsRepository statisticsRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         playerRepository.save(player);
         statisticsRepository.save(statistic);
@@ -73,37 +61,20 @@ public class UnitTests {
         Assert.assertEquals(expected, actual);
     }
 
-//    @Test
-//    public void createNewPlayerWithIncorrectData() {
-//        // arrange
-//        listAppender.start();
-//        logger.addAppender(listAppender);
-//        List<ILoggingEvent> logsList = listAppender.list;
-//        Player player = new Player("", "");
-//
-//        // act
-//        playerLogic.createPlayer(player);
-//
-//        // arrange
-//        Assert.assertEquals(Level.ERROR, logsList.get(logsList.size() - 1).getLevel());
-//    }
-
     @Test
     public void getPlayerWithCorrectData() {
         // arrange
-        Player expected;
-
-        // act
-        expected = playerLogic.getPlayer("abcd");
+        Player expected = playerLogic.getPlayer("abcd");
 
         // assert
         Assert.assertEquals(expected.getPlayer_id(), player.getPlayer_id());
     }
 
-    @Test(expected = ResponseStatusException.class)
+    @Test
     public void getPlayerWithIncorrectData() {
-        // act
-        playerLogic.getPlayer("ab");
+        assertThrows(ResponseStatusException.class, () -> {
+            playerLogic.getPlayer("ab");
+        });
     }
     // </editor-fold>
 
@@ -133,9 +104,11 @@ public class UnitTests {
         Assert.assertEquals(expected, actual.getPlayer_id());
     }
 
-    @Test(expected = ResponseStatusException.class)
+    @Test
     public void getStatisticFromPlayerByIdWithIncorrectData() {
-        statisticsLogic.getUserStatistics("wrong_id");
+        assertThrows(ResponseStatusException.class, () -> {
+            statisticsLogic.getUserStatistics("wrong_id");
+        });
     }
 
     @Test

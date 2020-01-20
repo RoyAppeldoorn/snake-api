@@ -6,14 +6,13 @@ import com.mpsnake.api.model.Statistic;
 import com.mpsnake.api.repositories.PlayerRepository;
 import com.mpsnake.api.repositories.StatisticsRepository;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@TestPropertySource(locations="classpath:application-test.properties")
 @SpringBootTest
 public class IntegrationTests {
     // <editor-fold defaultstate="collapsed" desc="Setup">
@@ -38,32 +36,16 @@ public class IntegrationTests {
 
     @Autowired
     private WebApplicationContext wac;
-
     @Resource
     private PlayerRepository playerRepository;
     @Resource
     private StatisticsRepository statisticsRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mock = MockMvcBuilders.webAppContextSetup(wac).build();
         playerRepository.save(player);
         statisticsRepository.save(statistic);
-    }
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="Error handling">
-    @Test
-    public void get404Error() throws Exception {
-        MvcResult result = mock.perform(MockMvcRequestBuilders.get("/oopsie")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-                .andReturn();
-
-        int expected = 404;
-
-        Assert.assertEquals(expected, result.getResponse().getStatus());
     }
     // </editor-fold>
 
