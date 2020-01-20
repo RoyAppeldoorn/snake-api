@@ -18,20 +18,20 @@ public class StatisticsController {
         this.statisticsLogic = statisticsLogic;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value="/{id}", produces = "application/json")
     public Statistic getPlayerStatistics(@PathVariable String id) {
         return statisticsLogic.getUserStatistics(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping(value="/create", produces = "application/json")
     public void createNewStatistic(@RequestBody Statistic id) { statisticsLogic.createNewStatistic(id); }
 
-    @PostMapping("/{id}/kill")
+    @PostMapping(value="/{id}/kill", produces = "application/json")
     public void increaseKillCountForPlayer(@PathVariable String id) {
         statisticsLogic.increaseKillCountForPlayer(id);
     }
 
-    @PostMapping("/{id}/dead")
+    @PostMapping(value="/{id}/dead", produces = "application/json")
     public void increaseDeadCountForPlayer(@PathVariable String id) {
         statisticsLogic.increaseDeadCountForPlayer(id);
     }
