@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class Player {
     @Id
     @JsonProperty("player_id")
