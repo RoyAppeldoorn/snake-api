@@ -1,14 +1,13 @@
 package com.mpsnake.api.controller;
 
 import com.mpsnake.api.logic.PlayerLogic;
+import com.mpsnake.api.logic.StatisticsLogic;
 import com.mpsnake.api.model.Player;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/player")
 @RestController
-@Api(value="player")
 public class PlayerController {
 
     private final PlayerLogic playerLogic;

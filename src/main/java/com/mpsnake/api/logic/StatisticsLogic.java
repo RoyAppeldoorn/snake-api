@@ -15,14 +15,6 @@ public class StatisticsLogic {
         this.statisticsRepository = statisticsRepo;
     }
 
-    public void createNewStatistic(Statistic id) {
-        try {
-            statisticsRepository.save(id);
-        } catch (Exception ex) {
-            LoggerUtil.errorLogging(ex.toString());
-        }
-    }
-
     public Statistic getUserStatistics(String id) {
         return statisticsRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(

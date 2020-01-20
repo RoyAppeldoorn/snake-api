@@ -62,6 +62,20 @@ public class UnitTests {
     }
 
     @Test
+    public void createNewStatisticWhenNewPlayerGetsCreated() {
+        // arrange
+        Player player = new Player("test", "test");
+        String expected = player.getPlayer_id();
+
+        // act
+        playerLogic.createPlayer(player);
+        String actual = statisticsRepository.findById("test").get().getPlayer_id();
+
+        // assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void getPlayerWithCorrectData() {
         // arrange
         Player expected = playerLogic.getPlayer("abcd");
@@ -79,18 +93,6 @@ public class UnitTests {
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="StatisticsLogic Unit tests">
-    @Test
-    public void createNewStatisticWithCorrectData() {
-        // arrange
-        Statistic stat = new Statistic("test");
-
-        // act
-        statisticsLogic.createNewStatistic(stat);
-        String actual = statisticsRepository.findById("test").get().getPlayer_id();
-
-        // assert
-        Assert.assertEquals("test", actual);
-    }
 
     @Test
     public void getStatisticFromPlayerByIdWithCorrectData() {
