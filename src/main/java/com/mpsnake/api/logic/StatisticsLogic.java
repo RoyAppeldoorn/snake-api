@@ -26,19 +26,9 @@ public class StatisticsLogic {
     }
 
     public Statistic getUserStatistics(String id) {
-        Optional<Statistic> statistic = null;
-        try {
-            statistic = statisticsRepository.findById(id);
-        } catch (Exception ex) {
-            LoggerUtil.errorLogging(ex.toString());
-        }
-
-        statistic.orElseThrow(() ->
-                new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "User not found")
-        );
-
-        return statistic.get();
+        return statisticsRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found"));
     }
 
     public void increaseKillCountForPlayer(String id) {

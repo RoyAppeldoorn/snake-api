@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -28,19 +29,9 @@ public class PlayerLogic {
     }
 
     public Player getPlayer(String id) {
-        Optional<Player> player = null;
-        try {
-            player = playerRepository.findById(id);
-        } catch (Exception ex) {
-            LoggerUtil.errorLogging(ex.toString());
-        }
-
-        player.orElseThrow(() ->
-                new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Player not found")
-        );
-
-        return player.get();
+        return playerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Player not found"));
     }
 
 }
