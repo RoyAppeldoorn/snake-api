@@ -33,12 +33,4 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .contact(new Contact("Roy Appeldoorn", "https://github.com/RoyAppeldoorn/snake-api", "roy.appeldoorn@gmail.com"))
                 .build();
     }
-
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
 }
